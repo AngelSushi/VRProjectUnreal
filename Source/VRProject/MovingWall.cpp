@@ -35,11 +35,9 @@ void AMovingWall::Tick(float DeltaTime)
 
 		float angle = FVector::DotProduct(PlayerToWall, Forward);
 
-		if (angle > 0) {
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("InFront"));
-		}
-		else if(angle < 0) {
-			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("InBack"));
+		 if(angle < 0) {
+			 // Killed Player 
+			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("InBack"));
 		}
 	}
 }
