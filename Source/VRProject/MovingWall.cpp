@@ -2,7 +2,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/PlayerController.h"
-
+#include "CheckPoint.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AMovingWall::AMovingWall()
 {
@@ -16,7 +17,9 @@ AMovingWall::AMovingWall()
 void AMovingWall::BeginPlay()
 {
 	Super::BeginPlay();
-	bLastChangeWallDirection = true;
+	PController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	GetWorld()->GetTimerManager().SetTimer(LifeTimerHandle,this,&AMovingWall::DestroyWall, LifeTimer,false);
 	
 }
 
@@ -24,56 +27,60 @@ void AMovingWall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-		FVector newPosition = GetActorForwardVector() * Speed * DeltaTime;
-		SetActorLocation(GetActorLocation() + newPosition);
+	FVector newPosition = GetActorForwardVector() * Speed * DeltaTime;
+	SetActorLocation(GetActorLocation() + newPosition);
 
-		APlayerController* PController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (!PController || !PController->GetPawn()) {
+		return;
+	}
 
-		if (!PController || !PController->GetPawn()) {
-			return;
-		}
-
-		if (CheckIfPlayerIsInWall(PController)) {
-			// Kill Player
-		}
-
-		 bChangeWallDirection = true;
-
-		 UWorld* World = GetWorld();
-		 check(World);
-
-		 FVector Start = PController->K2_GetActorLocation();
-		 FVector End = Start + PController->GetPawn()->GetActorForwardVector() * MaxDistanceToWall;
-
-		 FCollisionQueryParams QueryParams;
-
-
-		 FHitResult HitResult;
-
-		 bool bHit = World->LineTraceSingleByChannel(HitResult, Start, End,ECollisionChannel::ECC_Visibility, QueryParams);
-
-		 if (bHit) {
-			 if (AWall* Wall = Cast<AWall>(HitResult.GetActor())) {
-				 GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Hit Wall"));
-				
-				 GLog->Log(HitResult.GetActor()->GetName());
-				 bChangeWallDirection = false;
-			 }
-		 }
-
-
-		 if (bChangeWallDirection  && !bLastChangeWallDirection) {
-			 GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Yellow, TEXT("Change Wall"));
-			 
-		 }
-
-		 bLastChangeWallDirection = bChangeWallDirection;
-	
+	if (CheckIfPlayerIsInWall()) {
+		// Kill Player
+	}
 }
 
-void AMovingWall::DestroyWall() {}
 
-bool AMovingWall::CheckIfPlayerIsInWall(APlayerController* PController) {
+void AMovingWall::CheckForRotation() {
+	if (!PController || !PController->GetPawn()) {
+		return;
+	}
+
+	UWorld* World = GetWorld();
+	check(World);
+
+	FVector Start = GetActorLocation();
+	FVector End = Start + GetActorForwardVector() * 10000000000.f;
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+
+	FHitResult HitResult;
+	bool bRotate = true;
+	bool bHit = World->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_WorldDynamic, QueryParams);
+	if (bHit)
+	{
+		if (APlayerController* PlayerController = Cast<APlayerController>(HitResult.GetActor())) {
+			//bRotate = false;
+		}
+	}
+
+
+	if (bRotate) {
+		FRotator LookAt = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PController->GetPawn()->GetActorLocation());
+		SetActorRotation(FRotator(0,LookAt.Yaw,0));
+
+		GetWorld()->GetTimerManager().ClearTimer(LifeTimerHandle);
+		GetWorld()->GetTimerManager().SetTimer(LifeTimerHandle, this, &AMovingWall::DestroyWall, LockTimer, false);
+	}
+}
+
+void AMovingWall::DestroyWall() {
+	Destroy();
+}
+
+
+
+bool AMovingWall::CheckIfPlayerIsInWall() {
 	FVector PlayerToWall = PController->K2_GetActorLocation() - Detection->GetComponentLocation();
 	FVector Forward = GetActorForwardVector();
 

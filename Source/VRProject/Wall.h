@@ -13,6 +13,8 @@ class VRPROJECT_API AWall : public AActor,public IFlashable
 public:	
 	AWall();
 
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class USceneComponent> Scene;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UStaticMeshComponent> Mesh;
@@ -26,6 +28,7 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintCallable)
 	virtual void Flash() override;
 
 };

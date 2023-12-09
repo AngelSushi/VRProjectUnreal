@@ -3,9 +3,11 @@
 AWall::AWall()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	Scene = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
+	RootComponent = Scene;
+	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	RootComponent = Mesh;
+	Mesh->SetupAttachment(Scene);
 
 
 }
@@ -27,6 +29,8 @@ void AWall::Flash() {
 		return;
 	}
 
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Destroy Wall"));
+	Destroy();
 
 }
 

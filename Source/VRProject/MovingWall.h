@@ -7,6 +7,7 @@
 
 class UBoxComponent;
 class AWall;
+class ACheckPoint;
 
 UCLASS()
 class VRPROJECT_API AMovingWall : public AWall
@@ -23,7 +24,10 @@ public:
 	float Speed;
 
 	UPROPERTY(EditAnywhere)
-	float MaxDistanceToWall;
+	float LifeTimer;
+
+	UPROPERTY(EditAnywhere)
+	float LockTimer;
 
 	UFUNCTION()
 	void DestroyWall();
@@ -34,9 +38,14 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-private:
-	bool bChangeWallDirection;
-	bool bLastChangeWallDirection;
+	void CheckForRotation();
 
-	bool CheckIfPlayerIsInWall(APlayerController*);
+
+private:
+
+	bool CheckIfPlayerIsInWall();
+
+	TObjectPtr<class APlayerController> PController;
+
+	FTimerHandle LifeTimerHandle;
 };
