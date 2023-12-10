@@ -26,8 +26,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	float LifeTimer;
 
+
 	UPROPERTY(EditAnywhere)
-	float LockTimer;
+	float MinDistanceWithPlayer;
+
+	UPROPERTY() 
+	FTimerHandle LifeTimerHandle;
 
 	UFUNCTION()
 	void DestroyWall();
@@ -43,9 +47,7 @@ public:
 
 private:
 
-	bool CheckIfPlayerIsInWall();
-
 	TObjectPtr<class APlayerController> PController;
 
-	FTimerHandle LifeTimerHandle;
+	float lastAngle;
 };

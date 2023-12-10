@@ -1,5 +1,8 @@
 #include "WPSubSystem.h"
 #include "MovingWall.h"
+#include "Kismet/GameplayStatics.h"
+#include "CheckPoint.h"
+#include "Math/NumericLimits.h"
 
 void UWPSubSystem::Initialize(FSubsystemCollectionBase& Collection) {
 	Super::Initialize(Collection);

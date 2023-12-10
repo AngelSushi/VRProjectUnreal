@@ -2,15 +2,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "CheckPoint.generated.h"
+#include "LockPoint.generated.h"
 
 UCLASS()
-class VRPROJECT_API ACheckPoint : public AActor
+class VRPROJECT_API ALockPoint : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	ACheckPoint();
+	ALockPoint();
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class USceneComponent> Scene;
@@ -21,21 +21,18 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UArrowComponent> Arrow;
-#endif 
 
-
-	virtual void Tick(float DeltaTime) override;
+#endif
 
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	TObjectPtr<class AMovingWall> MovingWall;
-	TObjectPtr<class APlayerController> PController;
+public:	
+	virtual void Tick(float DeltaTime) override;
 
-	TArray<AActor*> CheckPoints;
+private:
+	TObjectPtr<class APlayerController> PController;
+	TObjectPtr<class AMovingWall> MovingWall;
 
 	float lastAngle;
-
-	bool IsNearestCheckPoint();
 };

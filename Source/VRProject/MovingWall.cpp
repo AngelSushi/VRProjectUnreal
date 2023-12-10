@@ -21,6 +21,7 @@ void AMovingWall::BeginPlay()
 
 	GetWorld()->GetTimerManager().SetTimer(LifeTimerHandle,this,&AMovingWall::DestroyWall, LifeTimer,false);
 	
+	lastAngle = -1; // Set to -1 to Disable first tick condition enter 
 }
 
 void AMovingWall::Tick(float DeltaTime)
@@ -34,9 +35,16 @@ void AMovingWall::Tick(float DeltaTime)
 		return;
 	}
 
-	if (CheckIfPlayerIsInWall()) {
-		// Kill Player
+	FVector PlayerToWall = PController->K2_GetActorLocation() - Detection->GetComponentLocation();
+	FVector Forward = GetActorForwardVector();
+
+	float angle = FVector::DotProduct(PlayerToWall, Forward);
+
+	if (angle < 0 && lastAngle >= 0) {
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Kill Player"));
 	}
+
+	lastAngle = angle;
 }
 
 
@@ -45,48 +53,16 @@ void AMovingWall::CheckForRotation() {
 		return;
 	}
 
-	UWorld* World = GetWorld();
-	check(World);
-
-	FVector Start = GetActorLocation();
-	FVector End = Start + GetActorForwardVector() * 10000000000.f;
-
-	FCollisionQueryParams QueryParams;
-	QueryParams.AddIgnoredActor(this);
-
-	FHitResult HitResult;
-	bool bRotate = true;
-	bool bHit = World->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_WorldDynamic, QueryParams);
-	if (bHit)
-	{
-		if (APlayerController* PlayerController = Cast<APlayerController>(HitResult.GetActor())) {
-			//bRotate = false;
-		}
-	}
-
-
-	if (bRotate) {
-		FRotator LookAt = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PController->GetPawn()->GetActorLocation());
-		SetActorRotation(FRotator(0,LookAt.Yaw,0));
-
-		GetWorld()->GetTimerManager().ClearTimer(LifeTimerHandle);
-		GetWorld()->GetTimerManager().SetTimer(LifeTimerHandle, this, &AMovingWall::DestroyWall, LockTimer, false);
-	}
+	FRotator LookAt = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), PController->GetPawn()->GetActorLocation());
+	SetActorRotation(FRotator(0,LookAt.Yaw,0));
 }
 
 void AMovingWall::DestroyWall() {
+	GetWorld()->GetTimerManager().ClearTimer(LifeTimerHandle);
 	Destroy();
 }
 
 
 
-bool AMovingWall::CheckIfPlayerIsInWall() {
-	FVector PlayerToWall = PController->K2_GetActorLocation() - Detection->GetComponentLocation();
-	FVector Forward = GetActorForwardVector();
-
-	float angle = FVector::DotProduct(PlayerToWall, Forward);
-
-	return angle < 0;
-}
 
 
