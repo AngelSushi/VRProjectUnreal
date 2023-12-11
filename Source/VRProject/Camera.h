@@ -24,6 +24,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Flash(FVector Position,FRotator Rotation);
 
+
+
 protected:
 	virtual void BeginPlay() override;
 

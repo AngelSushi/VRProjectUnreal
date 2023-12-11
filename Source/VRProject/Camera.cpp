@@ -1,5 +1,7 @@
 #include "Camera.h"
 #include "FlashLight.h"
+#include "Components/SceneCaptureComponent2D.h"
+#include "Kismet/KismetRenderingLibrary.h"
 
 ACamera::ACamera()
 {
@@ -26,4 +28,3 @@ void ACamera::Flash(FVector Position, FRotator Rotation) {
 	FlashLight->FlashSpeed = FlashSpeed;
 	FlashLight->FlashDuration = FlashDuration;
 }
-
