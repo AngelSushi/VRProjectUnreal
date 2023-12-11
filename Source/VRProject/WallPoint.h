@@ -24,7 +24,7 @@ public:
 #endif 
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AMovingWall> Wall;
+	TSubclassOf<class AWall> Wall;
 private: 
 
 	TObjectPtr<class APlayerController> PC;
