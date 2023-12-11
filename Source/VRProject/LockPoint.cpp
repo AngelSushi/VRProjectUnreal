@@ -40,7 +40,7 @@ void ALockPoint::Tick(float DeltaTime)
 	}
 
 	if (!MovingWall) {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Wall is Empty"));
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Wall is Empty"));
 		MovingWall = Cast<AMovingWall>(UGameplayStatics::GetActorOfClass(GetWorld(), AMovingWall::StaticClass()));
 		return;
 	}

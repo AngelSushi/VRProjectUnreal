@@ -2,18 +2,21 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "FlashLight.generated.h"
+#include "Camera.generated.h"
 
 UCLASS()
-class VRPROJECT_API AFlashLight : public AActor
+class VRPROJECT_API ACamera : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	AFlashLight();
+	ACamera();
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class USceneComponent> Scene;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<class UPointLightComponent> Light;
+	TObjectPtr<class UStaticMeshComponent> Mesh;
 
 	UPROPERTY(EditAnywhere)
 	float FlashSpeed;
@@ -21,10 +24,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	float FlashDuration;
 
-	FVector Direction;
+	UFUNCTION(BlueprintCallable)
+	void Flash(FVector Position,FRotator Rotation);
 
-	void StartFlash();
-	void EndFlash();
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -32,6 +35,4 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-private:
-	FTimerHandle LightHandle;
 };
