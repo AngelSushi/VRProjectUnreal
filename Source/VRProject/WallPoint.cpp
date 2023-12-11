@@ -43,6 +43,9 @@ void AWallPoint::Tick(float DeltaTime) {
 
 	float angle = FVector::DotProduct(PlayerToPoint, Forward);
 
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::FromInt(angle));
+
 	if (angle > 0) {
 		UWPSubSystem::SpawnWall(GetWorld(),Wall,GetActorLocation(),GetActorRotation());
 		bHasSpawnedWall = true;
