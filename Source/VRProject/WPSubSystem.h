@@ -17,7 +17,7 @@ public:
 
 	void Deinitialize() override;
 
-	static void SpawnWall(UWorld*,TSubclassOf<class AMovingWall>,FVector,FRotator);
+	static void SpawnWall(UWorld*,TSubclassOf<class AWall>,FVector,FRotator);
 
 
 private:
