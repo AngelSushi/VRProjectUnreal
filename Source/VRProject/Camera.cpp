@@ -7,9 +7,11 @@ ACamera::ACamera()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	Mesh = CreateDefaultSubobject<UMeshComponent>(TEXT("Mesh"));
+	Scene = CreateDefaultSubobject<USceneComponent>(TEXT("Scene"));
+	RootComponent = Scene;
 
-	RootComponent = Mesh;
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh->SetupAttachment(RootComponent);
 }
 
 void ACamera::BeginPlay()

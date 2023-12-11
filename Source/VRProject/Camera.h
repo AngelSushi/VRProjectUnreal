@@ -11,9 +11,12 @@ class VRPROJECT_API ACamera : public AActor
 	
 public:	
 	ACamera();
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<class USceneComponent> Scene;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<class UMeshComponent> Mesh;
+	TObjectPtr<class UStaticMeshComponent> Mesh;
 
 	UPROPERTY(EditAnywhere)
 	float FlashSpeed;
