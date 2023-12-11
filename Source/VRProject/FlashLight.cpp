@@ -15,16 +15,19 @@ AFlashLight::AFlashLight()
 void AFlashLight::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorld()->GetTimerManager().SetTimer(LightHandle,this,&AFlashLight::EndFlash,FlashDuration,false);
-	
+	StartFlash();
 }
 
 void AFlashLight::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FVector NewPosition = GetActorLocation() * FlashSpeed * DeltaTime;
+	FVector NewPosition = Direction * FlashSpeed * DeltaTime;
 	SetActorLocation(GetActorLocation() + NewPosition);
+}
+
+void AFlashLight::StartFlash() {
+	GetWorld()->GetTimerManager().SetTimer(LightHandle, this, &AFlashLight::EndFlash, FlashDuration, false);
 }
 
 void AFlashLight::EndFlash() {

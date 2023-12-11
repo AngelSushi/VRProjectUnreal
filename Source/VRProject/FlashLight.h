@@ -21,6 +21,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float FlashDuration;
 
+	FVector Direction;
+
+	void StartFlash();
 	void EndFlash();
 
 protected:

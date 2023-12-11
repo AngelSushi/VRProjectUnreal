@@ -2,6 +2,7 @@
 #include "FlashLight.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Kismet/KismetRenderingLibrary.h"
+#include "Components/PointLightComponent.h"
 
 ACamera::ACamera()
 {
@@ -29,4 +30,8 @@ void ACamera::Flash(FVector Position, FRotator Rotation) {
 	AFlashLight* FlashLight = Cast<AFlashLight>(GetWorld()->SpawnActor(AFlashLight::StaticClass(), &Position, &Rotation));
 	FlashLight->FlashSpeed = FlashSpeed;
 	FlashLight->FlashDuration = FlashDuration;
+
+	FlashLight->Direction = Mesh->GetForwardVector();
+
+	FlashLight->StartFlash();
 }
