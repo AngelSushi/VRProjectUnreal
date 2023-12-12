@@ -11,9 +11,6 @@ class VRPROJECT_API ACamera : public AActor
 	
 public:	
 	ACamera();
-	
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<class USceneComponent> Scene;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UStaticMeshComponent> Mesh;
