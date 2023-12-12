@@ -1,4 +1,5 @@
 #include "Monster.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 AMonster::AMonster()
 {
@@ -9,19 +10,41 @@ AMonster::AMonster()
 
 	PendingSightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sight"));
 	PendingSightMesh->SetupAttachment(Mesh);
+
+	Sight = CreateDefaultSubobject<USceneComponent>(TEXT("SightPosition"));
+	Sight->SetupAttachment(Mesh);
 }
 
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	bIsRotating = true;
 }
 
 void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	PendingSightMesh->AddWorldRotation(FRotator(0.f,50.f * DeltaTime,0.f));
+	if (bIsRotating) {
+		PendingSightMesh->AddWorldRotation(FRotator(0.f, 50.f * DeltaTime, 0.f));
+	}
+
+	UWorld* World = GetWorld();
+	check(World);
+
+	FVector Start = Sight->GetComponentLocation();
+	FVector End = Start + PendingSightMesh->GetForwardVector() * 1000.f;
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+
+	FHitResult HitResult;
+	bool bHit = World->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility, QueryParams);
+	if (bHit)
+	{
+		
+	}
+
 
 }
 
