@@ -58,7 +58,8 @@ Binaries/Win64/*
 Plugins/*/Binaries/*
 
 # Builds
-Build/*
+Build/* 
+Builds/*
 
 # Whitelist PakBlacklist-<BuildConfiguration>.txt files
 !Build/*/
