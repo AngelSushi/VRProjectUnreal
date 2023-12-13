@@ -19,6 +19,8 @@ public:
 
 	static void SpawnWall(UWorld*,TSubclassOf<class AWall>,FVector,FRotator);
 
+	static void SpawnWall(UWorld*, TSubclassOf<class AWall>, FVector, FRotator,FVector);
+
 
 private:
 	static UClass* WallBPClass;

@@ -3,6 +3,7 @@
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "WPSubSystem.h"
+#include "Wall.h"
 
 AWallPoint::AWallPoint()
 {
@@ -30,7 +31,7 @@ void AWallPoint::BeginPlay() {
 void AWallPoint::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
-	if (!PC) {
+	if (!PC || !PC->GetPawn()) {
 		return;
 	}
 
@@ -38,17 +39,16 @@ void AWallPoint::Tick(float DeltaTime) {
 		return;
 	}
 
-	FVector PlayerToPoint = PC->K2_GetActorLocation() - (GetActorLocation()  + GetActorForwardVector() * 100.f);
+	FVector PlayerToPoint = PC->GetPawn()->GetActorLocation() - (GetActorLocation()  + GetActorForwardVector() * 100.f);
 	FVector Forward = GetActorForwardVector();
 
 	float angle = FVector::DotProduct(PlayerToPoint, Forward);
 
 	if (angle > 0) {
-		UWPSubSystem::SpawnWall(GetWorld(),Wall,GetActorLocation(),GetActorRotation());
-		bHasSpawnedWall = true;
+		for (AWall* SWall : SpawningWalls) {
+			SWall->Mesh->SetVisibility(true);
+		}
 	}
-
-
 }
 
 

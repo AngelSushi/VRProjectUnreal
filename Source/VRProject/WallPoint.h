@@ -23,8 +23,10 @@ public:
 	TObjectPtr<class UArrowComponent> Arrow;
 #endif 
 
+
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AWall> Wall;
+	TArray<class AWall*> SpawningWalls;
+
 private: 
 
 	TObjectPtr<class APlayerController> PC;
