@@ -30,6 +30,9 @@ void ACamera::Flash(FVector Position, FRotator Rotation) {
 	FlashLight->FlashSpeed = FlashSpeed;
 	FlashLight->FlashDuration = FlashDuration;
 
+	FlashLight->Light->Intensity = LightIntensity;
+	FlashLight->Light->SetLightColor(LightColor);
+
 	FlashLight->Direction = Mesh->GetForwardVector();
 
 	FlashLight->StartFlash();

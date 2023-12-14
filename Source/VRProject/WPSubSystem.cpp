@@ -16,3 +16,9 @@ void UWPSubSystem::SpawnWall(UWorld* World,TSubclassOf<class AWall> Wall,FVector
 	World->SpawnActor(Wall, &SpawnPosition, &Rotation);
 	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Spawn Wall"));
 }
+
+void UWPSubSystem::SpawnWall(UWorld* World, TSubclassOf<class AWall> Wall, FVector SpawnPosition, FRotator Rotation,FVector Scale) {
+	AActor* WallInstance = World->SpawnActor(Wall, &SpawnPosition, &Rotation);
+	WallInstance->SetActorScale3D(Scale);
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Spawn Wall"));
+}
