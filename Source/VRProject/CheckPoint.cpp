@@ -52,20 +52,29 @@ void ACheckPoint::Tick(float DeltaTime) {
 	float angle = FVector::DotProduct(WallToCPoint, Forward);
 
 	if (angle >= 0  && lastAngle < 0) {
+		// Récupérer quand le joueur change de position, récupérer la direction et l'endroit ou on a changer de direction 
+
+
+
+		//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::FromInt(degrees));
+
+
+
 		//MovingWall->CheckForRotation();
 
 		// Box Cast En Forward du mur et voir s'il y a le joueur 
 
-		FVector Start = MovingWall->GetActorLocation();
+		/*FVector Start = MovingWall->GetActorLocation();
 		FVector End = Start + MovingWall->GetActorForwardVector() * 1000000.f;
 
 		FHitResult HitResult;
 
-		bool bHit = UKismetSystemLibrary::BoxTraceSingle(this, Start, End, FVector(50.f, 50.f, 50.f), FRotator(0.f, 0.f, 0.f), UEngineTypes::ConvertToTraceType(ECC_Pawn), false,TArray<AActor*>(),EDrawDebugTrace::ForDuration, HitResult,true);
+		bool bHit = UKismetSystemLibrary::BoxTraceSingle(this, Start, End, FVector(5.f, 5.f, 5.f), FRotator(0.f, 0.f, 0.f), UEngineTypes::ConvertToTraceType(ECC_Pawn), false,TArray<AActor*>(),EDrawDebugTrace::ForDuration, HitResult,true);
 
 		if (bHit) {
 			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Hit With Something"));
 		}
+		*/
 	}
 
 	lastAngle = angle;
