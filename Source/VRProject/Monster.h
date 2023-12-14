@@ -15,9 +15,6 @@ public:
 	UPROPERTY(EditAnywhere) 
 	TObjectPtr<class USkeletalMeshComponent> SkeletalMesh;
 	
-	UPROPERTY(EditAnywhere) 
-	TObjectPtr<class UStaticMeshComponent> Mesh;
-
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<class UStaticMeshComponent> PendingSightMesh;
 
@@ -34,10 +31,10 @@ public:
 	float WallSpawnDistance;
 
 	UPROPERTY(EditAnywhere)
-	float RayCastRadius;
+	float RayCastRadius = 50.f;
 
 	UPROPERTY(EditAnywhere)
-	float RayCastDistance;
+	float RayCastDistance = 1000.f;
 
 private:
 	bool bIsRotating;

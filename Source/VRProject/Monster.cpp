@@ -4,6 +4,7 @@
 #include "VRCharacter.h"
 #include "WPSubSystem.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -12,17 +13,14 @@ AMonster::AMonster()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	//Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	//RootComponent = Mesh;
-
 	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 	RootComponent = SkeletalMesh;
 
 	PendingSightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sight"));
-	PendingSightMesh->SetupAttachment(SkeletalMesh);
+	PendingSightMesh->SetupAttachment(SkeletalMesh, FName("Head_Socket"));
 
 	Sight = CreateDefaultSubobject<USceneComponent>(TEXT("SightPosition"));
-	Sight->SetupAttachment(SkeletalMesh);	
+	Sight->SetupAttachment(SkeletalMesh, FName("Head_Socket"));
 }
 
 void AMonster::BeginPlay()
@@ -35,9 +33,9 @@ void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bIsRotating) {
-		PendingSightMesh->AddWorldRotation(FRotator(0.f, 50.f * DeltaTime, 0.f));
-	}
+	// if (bIsRotating) {
+	// 	PendingSightMesh->AddWorldRotation(FRotator(0.f, 50.f * DeltaTime, 0.f));
+	// }
 
 	UWorld* World = GetWorld();
 	check(World);
@@ -66,7 +64,7 @@ void AMonster::Tick(float DeltaTime)
 				FVector CamForward = VRCharacter->Camera->GetForwardVector();
 				
 				FVector WorldForward = FVector(1,0,0);
-				FVector WorldRight= FVector(0,1,0);
+				FVector WorldRight = FVector(0,1,0);
 				
 				float DotWForward = FVector::DotProduct(CamForward, WorldForward);
 				float DotWRight = FVector::DotProduct(CamForward, WorldRight);
