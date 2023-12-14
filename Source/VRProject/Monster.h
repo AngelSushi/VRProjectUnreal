@@ -27,6 +27,15 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere)
+	float WallSpawnDistance;
+
+	UPROPERTY(EditAnywhere)
+	float RayCastRadius;
+
+	UPROPERTY(EditAnywhere)
+	float RayCastDistance;
+
 private:
 	bool bIsRotating;
 };
