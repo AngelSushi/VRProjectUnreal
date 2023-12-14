@@ -41,17 +41,31 @@ void ACheckPoint::Tick(float DeltaTime) {
 		return;
 	}
 
-	if (!IsNearestCheckPoint()) {
+	/*if (!IsNearestCheckPoint()) {
 		return;
 	}
+	*/
 
 	FVector WallToCPoint = MovingWall->GetActorLocation() - GetActorLocation();
 	FVector Forward = GetActorForwardVector();
 
 	float angle = FVector::DotProduct(WallToCPoint, Forward);
 
-	if (angle >= 0 && lastAngle < 0) {
-		MovingWall->CheckForRotation();
+	if (angle >= 0  && lastAngle < 0) {
+		//MovingWall->CheckForRotation();
+
+		// Box Cast En Forward du mur et voir s'il y a le joueur 
+
+		FVector Start = MovingWall->GetActorLocation();
+		FVector End = Start + MovingWall->GetActorForwardVector() * 1000000.f;
+
+		FHitResult HitResult;
+
+		bool bHit = UKismetSystemLibrary::BoxTraceSingle(this, Start, End, FVector(50.f, 50.f, 50.f), FRotator(0.f, 0.f, 0.f), UEngineTypes::ConvertToTraceType(ECC_Pawn), false,TArray<AActor*>(),EDrawDebugTrace::ForDuration, HitResult,true);
+
+		if (bHit) {
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Hit With Something"));
+		}
 	}
 
 	lastAngle = angle;
