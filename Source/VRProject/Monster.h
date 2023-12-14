@@ -13,6 +13,9 @@ public:
 	AMonster();
 
 	UPROPERTY(EditAnywhere) 
+	TObjectPtr<class USkeletalMeshComponent> SkeletalMesh;
+	
+	UPROPERTY(EditAnywhere) 
 	TObjectPtr<class UStaticMeshComponent> Mesh;
 
 	UPROPERTY(EditAnywhere)
