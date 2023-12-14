@@ -36,6 +36,8 @@ public:
 	UFUNCTION()
 	void DestroyWall();
 
+	void CheckForDeath();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -50,4 +52,9 @@ private:
 	TObjectPtr<class APlayerController> PController;
 
 	float lastAngle;
+	bool bCheckHasChangedDirection;
+	FVector StartForward;
+	FTimerHandle LocationTimer;
+
+	void CheckChangeLocation();
 };

@@ -48,10 +48,12 @@ void ALockPoint::Tick(float DeltaTime)
 	FVector WallToCPoint = PController->GetPawn()->GetActorLocation() - GetActorLocation();
 	FVector Forward = GetActorForwardVector();
 
+	float distanceWithPoint = FVector::Distance(PController->GetPawn()->GetActorLocation(),GetActorLocation());
+
 	float angle = FVector::DotProduct(WallToCPoint, Forward);
 
-	if (angle > 0) { // The Player is in the soft lock area 
-		// Verifier si le mur le poursuit
+	if (angle > 0 && distanceWithPoint < 10.f) { // The Player is in the soft lock area 
+		// Verifier si le mur le poursuit + Ajouter de la Distance
 		
 		float distance = FVector::Distance(PController->GetPawn()->GetActorLocation(),MovingWall->GetActorLocation());
 	

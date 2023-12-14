@@ -35,6 +35,39 @@ void AMovingWall::Tick(float DeltaTime)
 		return;
 	}
 
+	CheckForDeath();
+
+	if (!bCheckHasChangedDirection) {
+		StartForward = PController->GetPawn()->GetActorForwardVector();
+		bCheckHasChangedDirection = true;
+		GetWorld()->GetTimerManager().SetTimer(LocationTimer,this,&AMovingWall::CheckChangeLocation,1.f,false);
+	}
+
+	// Récupérer quand le joueur change de position, récupérer la direction et l'endroit ou on a changer de direction 
+
+	
+}
+
+void AMovingWall::CheckChangeLocation() {
+	GetWorld()->GetTimerManager().ClearTimer(LocationTimer);
+
+	float dot = FVector::DotProduct(StartForward, PController->GetPawn()->GetActorForwardVector());
+	float angle = FMath::Acos(dot);
+
+	if (FMath::Abs(angle) >= 80 && FMath::Abs(angle) <= 100) { // The player is going to the right or the left side
+		// Get si c droite ou gauche
+		
+
+		// Enregistrer la position + la direction pour faire changer le moving wall
+
+
+	}
+	// L'angle entre l'ancien forward et le nouveau est situé entre 80 et 100
+
+	bCheckHasChangedDirection = false;
+}
+
+void AMovingWall::CheckForDeath() {
 	FVector PlayerToWall = PController->K2_GetActorLocation() - Detection->GetComponentLocation();
 	FVector Forward = GetActorForwardVector();
 
@@ -46,7 +79,6 @@ void AMovingWall::Tick(float DeltaTime)
 
 	lastAngle = angle;
 }
-
 
 void AMovingWall::CheckForRotation() {
 	if (!PController || !PController->GetPawn()) {
