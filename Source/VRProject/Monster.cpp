@@ -12,14 +12,17 @@ AMonster::AMonster()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	RootComponent = Mesh;
+	//Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	//RootComponent = Mesh;
+
+	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
+	RootComponent = SkeletalMesh;
 
 	PendingSightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sight"));
-	PendingSightMesh->SetupAttachment(Mesh);
+	PendingSightMesh->SetupAttachment(SkeletalMesh);
 
 	Sight = CreateDefaultSubobject<USceneComponent>(TEXT("SightPosition"));
-	Sight->SetupAttachment(Mesh);
+	Sight->SetupAttachment(SkeletalMesh);	
 }
 
 void AMonster::BeginPlay()
