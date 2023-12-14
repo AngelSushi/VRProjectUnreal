@@ -42,9 +42,47 @@ void AWallPoint::Tick(float DeltaTime) {
 	FVector PlayerToPoint = PC->GetPawn()->GetActorLocation() - (GetActorLocation()  + GetActorForwardVector() * 100.f);
 	FVector Forward = GetActorForwardVector();
 
-	float angle = FVector::DotProduct(PlayerToPoint, Forward);
+	AActor* RightActor = nullptr;
+	AActor* LeftActor = nullptr;
 
-	if (angle > 0) {
+	float angle = FVector::DotProduct(PlayerToPoint, Forward);
+	
+	UWorld* World = GetWorld();
+	check(World);
+
+	FVector Start = GetActorLocation();
+	FVector End = Start + GetActorRightVector() * 10000.f;
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+
+	FHitResult HitResult;
+	bool bHit = World->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility, QueryParams);
+	
+	if (bHit) {
+		RightActor = HitResult.GetActor();
+	}
+
+	End = Start + GetActorRightVector() * -10000.f;
+
+	bHit = World->LineTraceSingleByChannel(HitResult, Start, End, ECollisionChannel::ECC_Visibility, QueryParams);
+
+	if (bHit) {
+		LeftActor = HitResult.GetActor();
+	}
+
+	float DistanceTolerance = 500.f;
+
+	if (RightActor && LeftActor) {
+		DistanceTolerance = FVector::Distance(RightActor->GetActorLocation(),LeftActor->GetActorLocation());
+	}
+
+
+	float Distance = FVector::Distance(PC->GetPawn()->GetActorLocation(),GetActorLocation());
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::FromInt(DistanceTolerance));
+
+	if (angle > 0 && Distance <= DistanceTolerance) {
 		for (AWall* SWall : SpawningWalls) {
 			SWall->Mesh->SetVisibility(true);
 		}

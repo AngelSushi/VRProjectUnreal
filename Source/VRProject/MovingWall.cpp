@@ -38,9 +38,9 @@ void AMovingWall::Tick(float DeltaTime)
 	CheckForDeath();
 
 	if (!bCheckHasChangedDirection) {
-		StartForward = PController->GetPawn()->GetActorForwardVector();
-		bCheckHasChangedDirection = true;
-		GetWorld()->GetTimerManager().SetTimer(LocationTimer,this,&AMovingWall::CheckChangeLocation,1.f,false);
+		//StartForward = PController->GetPawn()->GetActorForwardVector();
+		//bCheckHasChangedDirection = true;
+		//GetWorld()->GetTimerManager().SetTimer(LocationTimer,this,&AMovingWall::CheckChangeLocation,1.f,false);
 	}
 
 	// Récupérer quand le joueur change de position, récupérer la direction et l'endroit ou on a changer de direction 
@@ -54,10 +54,13 @@ void AMovingWall::CheckChangeLocation() {
 	float dot = FVector::DotProduct(StartForward, PController->GetPawn()->GetActorForwardVector());
 	float angle = FMath::Acos(dot);
 
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::FromInt(angle));
+
 	if (FMath::Abs(angle) >= 80 && FMath::Abs(angle) <= 100) { // The player is going to the right or the left side
 		// Get si c droite ou gauche
 		
 
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Change Direction"));
 		// Enregistrer la position + la direction pour faire changer le moving wall
 
 
@@ -74,7 +77,7 @@ void AMovingWall::CheckForDeath() {
 	float angle = FVector::DotProduct(PlayerToWall, Forward);
 
 	if (angle < 0 && lastAngle >= 0) {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Kill Player"));
+		UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
 	}
 
 	lastAngle = angle;
