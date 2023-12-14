@@ -21,6 +21,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	float FlashDuration;
 
+	UPROPERTY(EditAnywhere)
+	float LightIntensity = 100000.f;
+
+	UPROPERTY(EditAnywhere)
+	FLinearColor LightColor;
+
 	UFUNCTION(BlueprintCallable)
 	void Flash(FVector Position,FRotator Rotation);
 
