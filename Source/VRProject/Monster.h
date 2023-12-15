@@ -16,16 +16,25 @@ public:
 	TObjectPtr<USkeletalMeshComponent> SkeletalMesh;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<UStaticMeshComponent> PendingSightMesh;
+	TObjectPtr<UStaticMeshComponent> SightRoot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> Sight;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<class USplineComponent> SplineComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> WayPoint;
 
 protected:
 	virtual void BeginPlay() override;
 
 public:	
-	virtual void Tick(float DeltaTime) override;
+	// virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	void SpawnWall(FVector WallSpawnPos, FRotator WallSpawnRot);
 
 	UPROPERTY(EditAnywhere)
 	float WallSpawnDistance;
