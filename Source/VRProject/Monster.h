@@ -13,13 +13,13 @@ public:
 	AMonster();
 
 	UPROPERTY(EditAnywhere) 
-	TObjectPtr<class USkeletalMeshComponent> SkeletalMesh;
+	TObjectPtr<USkeletalMeshComponent> SkeletalMesh;
 	
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<class UStaticMeshComponent> PendingSightMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> PendingSightMesh;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<class USceneComponent> Sight;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class USplineComponent> SplineComp;
 
 protected:
 	virtual void BeginPlay() override;
@@ -38,4 +38,6 @@ public:
 
 private:
 	bool bIsRotating;
+
+	float Distance = 0;
 };

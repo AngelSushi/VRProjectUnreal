@@ -4,8 +4,10 @@
 #include "VRCharacter.h"
 #include "WPSubSystem.h"
 #include "Camera/CameraComponent.h"
+#include "Components/SplineComponent.h"
 #include "Components/SpotLightComponent.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -19,28 +21,56 @@ AMonster::AMonster()
 	PendingSightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sight"));
 	PendingSightMesh->SetupAttachment(SkeletalMesh, FName("Head_Socket"));
 
-	Sight = CreateDefaultSubobject<USceneComponent>(TEXT("SightPosition"));
-	Sight->SetupAttachment(SkeletalMesh, FName("Head_Socket"));
+	// TraceTarget = CreateDefaultSubobject<USceneComponent>(TEXT("TraceTarget"));
+	// TraceTarget->SetupAttachment(SkeletalMesh);
 }
 
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
 	bIsRotating = true;
+	
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("Spline"), FoundActors);
+
+	AActor* Spline = FoundActors[0];
+	SplineComp = Spline->GetComponentByClass<USplineComponent>();
 }
 
 void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// if (bIsRotating) {
-	// 	PendingSightMesh->AddWorldRotation(FRotator(0.f, 50.f * DeltaTime, 0.f));
+	// Distance += DeltaTime;
+	//
+	// if (Distance > SplineComp->GetSplineLength())
+	// {
+	// 	Distance = 0;
 	// }
 
 	UWorld* World = GetWorld();
 	check(World);
+	
+	// if (SplineComp) {
+	// 	// Obtenez la position de la sphère le long du spline
+	// 	FVector SphereLocation = SplineComp->GetLocationAtDistanceAlongSpline(DeltaTime, ESplineCoordinateSpace::World);
+	//
+	// 	// Obtenez la position actuelle du géant
+	// 	FVector SightLocation = GetActorLocation();
+	//
+	// 	// Calculer la direction entre le géant et la sphère
+	// 	FVector DirectionToSphere = (SphereLocation - SightLocation).GetSafeNormal();
+	//
+	// 	// Calculer la rotation à partir de la direction
+	// 	FRotator RotationToSphere = FRotationMatrix::MakeFromX(DirectionToSphere).Rotator();
+	//
+	//
+	// 	// Appliquer la rotation au Sight Component
+	// 	PendingSightMesh->SetWorldRotation(RotationToSphere);
+	// }
+	
 
-	FVector Start = Sight->GetComponentLocation();
+	FVector Start = PendingSightMesh->GetComponentLocation();
 	FVector End = Start + PendingSightMesh->GetForwardVector() * RayCastDistance;
 
 	FCollisionQueryParams QueryParams;
