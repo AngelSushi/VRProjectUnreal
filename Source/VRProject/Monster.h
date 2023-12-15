@@ -13,32 +13,40 @@ public:
 	AMonster();
 
 	UPROPERTY(EditAnywhere) 
-	TObjectPtr<class USkeletalMeshComponent> SkeletalMesh;
+	TObjectPtr<USkeletalMeshComponent> SkeletalMesh;
 	
-	UPROPERTY(EditAnywhere) 
-	TObjectPtr<class UStaticMeshComponent> Mesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> SightRoot;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<class UStaticMeshComponent> PendingSightMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> Sight;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<class USceneComponent> Sight;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<class USplineComponent> SplineComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> WayPoint;
 
 protected:
 	virtual void BeginPlay() override;
 
 public:	
-	virtual void Tick(float DeltaTime) override;
+	// virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	void SpawnWall(FVector WallSpawnPos, FRotator WallSpawnRot);
 
 	UPROPERTY(EditAnywhere)
 	float WallSpawnDistance;
 
 	UPROPERTY(EditAnywhere)
-	float RayCastRadius;
+	float RayCastRadius = 50.f;
 
 	UPROPERTY(EditAnywhere)
-	float RayCastDistance;
+	float RayCastDistance = 1000.f;
 
 private:
 	bool bIsRotating;
+
+	float Distance = 0;
 };

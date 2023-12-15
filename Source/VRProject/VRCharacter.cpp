@@ -37,7 +37,7 @@ FHitResult AVRCharacter::SphereTrace()
 	TArray<AActor*> ActorsToIgnore;
 	FHitResult HitResult;
 	
-	UKismetSystemLibrary::SphereTraceSingle(this, TraceStart, TraceEnd, 10.f, TraceTypeQuery1, false, ActorsToIgnore,EDrawDebugTrace::ForDuration, HitResult, true);
+	UKismetSystemLibrary::SphereTraceSingleByProfile(this, TraceStart, TraceEnd, 10.f, FName("Monster"), false, ActorsToIgnore,EDrawDebugTrace::ForDuration, HitResult, true);
 	return HitResult;
 }
 
