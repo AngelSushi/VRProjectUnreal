@@ -81,8 +81,9 @@ void AWallPoint::Tick(float DeltaTime) {
 	float Distance = FVector::Distance(PC->GetPawn()->GetActorLocation(),GetActorLocation());
 
 	if (angle > 0 && Distance <= DistanceTolerance) {
+
 		for (AWall* SWall : SpawningWalls) {
-			SWall->Mesh->SetVisibility(true);
+			SWall->SetActorLocation(FVector(SWall->GetActorLocation().X,SWall->GetActorLocation().Y,0.f));
 		}
 	}
 }
